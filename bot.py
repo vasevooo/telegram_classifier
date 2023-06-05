@@ -21,6 +21,14 @@ SEQ_LEN = 146
 model = RNNNet(n_layers=N_LAYERS, hidden_dim=HIDDEN_DIM, emb_size=EMBEDDING_DIM, vocab_size=VOCAB_SIZE, seq_len=SEQ_LEN)
 model.load_state_dict(torch.load('models/10_monday_best.pt', map_location=torch.device('cpu')))
 
+with open('config.json') as f:
+    config_data = json.load(f)
+    TOKEN = config_data['token']
+
+
+bot = Bot(token=TOKEN)
+dp = Dispatcher(bot)
+
 
 # Preprocess functions
 
@@ -83,13 +91,6 @@ async def handle_message(message: types.Message):
     response = "Positive" if sentiment == 1 else "Negative"
     await message.reply(response)
 
-
-
-
-
-
-bot = Bot(token='5860638077:AAF-JQCksGqtBA4YRQ5u60sNCMGUWlynEXQ')
-dp = Dispatcher(bot)
 dp.register_message_handler(handle_message)
 
 if __name__ == '__main__':
